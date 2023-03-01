@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class mg1_script : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Transform target;
+    Vector3 destination;
+    NavMeshAgent agent;
+
     void Start()
     {
-        
+        agent = GetComponent<NavMeshAgent>();
+        destination = agent.destination;
     }
 
-    // Update is called once per frame
-    //Plane plane = new Plane(Vector3.up, 0);
     public Vector3 screenPosition;
     public Vector3 worldPosition;
     Plane plane = new Plane(Vector3.up, 0);
@@ -25,12 +29,10 @@ public class mg1_script : MonoBehaviour
         {
             worldPosition = ray.GetPoint(distance);
         }
-        transform.position = worldPosition;
-        //float distance;
-        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        //if (plane.Raycast(ray, out distance))
-        //{
-        //    worldPosition = ray.GetPoint(distance);
-        //}
+
+        if (Vector3.Distance(destination, target.position) > 1.0f && Input.GetMouseButtonDown(1))
+        {
+            agent.destination = worldPosition;
+        }
     }
 }
